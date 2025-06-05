@@ -24,7 +24,7 @@ while (traderSystemSimulation.DoSimulationStep())
 Console.WriteLine("Results:");
 foreach (var player in traderSystemSimulation.Players)
 {
-    Console.WriteLine($"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.GetContext())}");
+    Console.WriteLine($"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.GetContext()):0.00}");
 }
 
 

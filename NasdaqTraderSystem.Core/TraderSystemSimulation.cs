@@ -69,13 +69,43 @@ public class TraderSystemSimulation
 
     public decimal GetPriceOnDay(IStockListing listing, DateOnly currentDate)
     {
-        return StockListings.First(b => b == listing).PricePoints.First(p => p.Date == currentDate)
-            .Price;
+        var pricePoints = StockListings.First(b => b == listing).PricePoints;
+        return pricePoints.FirstOrDefault(p => p.Date == currentDate)?
+            .Price ?? pricePoints.Last().Price;
     }
 
     public bool ProcessTrade(ITraderBot traderBot, Trade trade)
     {
+        if (Trades[traderBot].Count(c => c.ExecutedOn == GetCurrentDate()) >= _systemContext.AmountOfTradesPerDay)
+        {
+            return false;
+        }
+        var cash = BankAccounts[traderBot];
 
+        if (cash < trade.Amount * trade.AtPrice)
+        {
+            return false;
+        }
+
+        var holding = Holdings[traderBot].FirstOrDefault(b => b.Listing == trade.Listing) as Holding;
+        if (holding == null)
+        {
+            holding = new Holding()
+            {
+                Listing = trade.Listing
+            };
+            Holdings[traderBot].Add(holding);
+        }
+
+        if (trade.Amount < 0 
+            && holding.Amount + trade.Amount < 0)
+        {
+            return false;
+        }
+
+        holding.Amount += trade.Amount;
+        BankAccounts[traderBot] += (trade.Amount * trade.AtPrice);
+        
         return false;
     }
 }
