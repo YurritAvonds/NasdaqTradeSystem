@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasdaqTraderSystem.Core", "NasdaqTraderSystem.Core\NasdaqTraderSystem.Core.csproj", "{724854C3-625A-4467-95D0-8E18B50345C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasdaqTraderSystem.Client", "NasdaqTraderSystem.Client\NasdaqTraderSystem.Client.csproj", "{7ECD0536-AFE2-4240-914F-7E29754FB97D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleTraderBot", "ExampleTraderBot\ExampleTraderBot.csproj", "{53638000-A6E0-4BA8-8F79-9332F61BFB62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasdaqTrader.Bot.Core", "NasdaqTrader.Bot.Core\NasdaqTrader.Bot.Core.csproj", "{35CF3EC7-00FC-4E57-845D-DAA4DDA35B6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasdaqTrader.CLI", "NasdaqTrader.CLI\NasdaqTrader.CLI.csproj", "{474CB44E-FBD1-40E1-84E9-9CDD6604E1E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{724854C3-625A-4467-95D0-8E18B50345C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724854C3-625A-4467-95D0-8E18B50345C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724854C3-625A-4467-95D0-8E18B50345C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724854C3-625A-4467-95D0-8E18B50345C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ECD0536-AFE2-4240-914F-7E29754FB97D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ECD0536-AFE2-4240-914F-7E29754FB97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ECD0536-AFE2-4240-914F-7E29754FB97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ECD0536-AFE2-4240-914F-7E29754FB97D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53638000-A6E0-4BA8-8F79-9332F61BFB62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53638000-A6E0-4BA8-8F79-9332F61BFB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53638000-A6E0-4BA8-8F79-9332F61BFB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53638000-A6E0-4BA8-8F79-9332F61BFB62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35CF3EC7-00FC-4E57-845D-DAA4DDA35B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35CF3EC7-00FC-4E57-845D-DAA4DDA35B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35CF3EC7-00FC-4E57-845D-DAA4DDA35B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35CF3EC7-00FC-4E57-845D-DAA4DDA35B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{474CB44E-FBD1-40E1-84E9-9CDD6604E1E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474CB44E-FBD1-40E1-84E9-9CDD6604E1E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474CB44E-FBD1-40E1-84E9-9CDD6604E1E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474CB44E-FBD1-40E1-84E9-9CDD6604E1E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

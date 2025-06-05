@@ -1,0 +1,23 @@
+﻿using NasdaqTrader.Bot.Core;
+
+namespace ExampleTraderBot;
+
+public class ExampleTrader : ITraderBot
+{
+    public string CompanyName => "Stupid Investments";
+
+    public void DoTurn(ITraderSystemContext systemContext)
+    {
+        var listings = systemContext.GetListings();
+        var cash = systemContext.GetCurrentCash(this);
+        var currentDate = systemContext.CurrentDate;
+        var tradesLeft = systemContext.GetTradesLeftForToday(this);
+
+        systemContext.BuyStock(this, listings[0], 1);
+
+        if (systemContext.CurrentDate == systemContext.EndDate)
+        {
+            systemContext.SellStock(this, listings[0], systemContext.GetHoldings(this, listings[0]).Amount);
+        }
+    }
+}
