@@ -37,12 +37,18 @@ public class TraderSystemSimulation
 
     public bool DoSimulationStep()
     {
-        if (_systemContext.CurrentDate == _systemContext.EndDate)
+        if (_systemContext.CurrentDate >= _systemContext.EndDate)
         {
             return false;
         }
 
         _systemContext.CurrentDate = _systemContext.CurrentDate.AddDays(1);
+        while (_systemContext.CurrentDate.DayOfWeek == DayOfWeek.Saturday ||
+               _systemContext.CurrentDate.DayOfWeek == DayOfWeek.Sunday || _systemContext.CurrentDate.IsFederalHoliday())
+        {
+            _systemContext.CurrentDate = _systemContext.CurrentDate.AddDays(1);
+        }
+
         foreach (var player in Players)
         {
             try
@@ -80,6 +86,7 @@ public class TraderSystemSimulation
         {
             return false;
         }
+
         var cash = BankAccounts[traderBot];
 
         if (cash < trade.Amount * trade.AtPrice)
@@ -97,15 +104,17 @@ public class TraderSystemSimulation
             Holdings[traderBot].Add(holding);
         }
 
-        if (trade.Amount < 0 
+        if (trade.Amount < 0
             && holding.Amount + trade.Amount < 0)
         {
             return false;
         }
 
         holding.Amount += trade.Amount;
-        BankAccounts[traderBot] += (trade.Amount * trade.AtPrice);
-        
+        BankAccounts[traderBot] -= (trade.Amount * trade.AtPrice);
+
         return false;
     }
+
+  
 }
