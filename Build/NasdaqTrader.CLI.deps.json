@@ -1,0 +1,49 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "NasdaqTrader.CLI/1.0.0": {
+        "dependencies": {
+          "NasdaqTraderSystem.Core": "1.0.0"
+        },
+        "runtime": {
+          "NasdaqTrader.CLI.dll": {}
+        }
+      },
+      "NasdaqTrader.Bot.Core/1.0.0": {
+        "runtime": {
+          "NasdaqTrader.Bot.Core.dll": {}
+        }
+      },
+      "NasdaqTraderSystem.Core/1.0.0": {
+        "dependencies": {
+          "NasdaqTrader.Bot.Core": "1.0.0"
+        },
+        "runtime": {
+          "NasdaqTraderSystem.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NasdaqTrader.CLI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NasdaqTrader.Bot.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NasdaqTraderSystem.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
