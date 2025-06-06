@@ -10,4 +10,7 @@
       <ProjectReference Include="..\NasdaqTrader.Bot.Core\NasdaqTrader.Bot.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+    </ItemGroup>
+
 </Project>

@@ -59,8 +59,7 @@ public class StockLoader
                     pricePoints.Add(new PricePoint()
                     {
                         Date = date,
-                        Price = decimal.Parse(csvContent[i][1], NumberStyles.AllowDecimalPoint,
-                            CultureInfo.InvariantCulture)
+                        Price = decimal.Parse(csvContent[i][1],CultureInfo.InvariantCulture)
                     });
                 }
             }
