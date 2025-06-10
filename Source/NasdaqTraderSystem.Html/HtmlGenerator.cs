@@ -53,6 +53,25 @@ public class HtmlGenerator
         GenerateCompaniesPlot(baseDirectory, traderSystemSimulation, gameDate);
         Directory.CreateDirectory($"{baseDirectory}{gameDate:dd-MM-yyyy-HH-mm}\\");
         File.WriteAllText($"{baseDirectory}{gameDate:dd-MM-yyyy-HH-mm}\\GameResult.html", GetGameHtml(results));
+
+        var files = Directory.GetDirectories(baseDirectory).Reverse().ToArray();
+        GenerateIndex(baseDirectory, files);
+    }
+
+    private void GenerateIndex(string baseDirectory, string[] files)
+    {
+        var context = new IndexContext();
+        context.Games = files.Select(b => new IndexGame()
+        {
+            GameHTML = Path.GetFileNameWithoutExtension(b) + "\\GameResult.html",
+            Name = Path.GetFileNameWithoutExtension(b)
+        }).ToArray();
+        var indexTemplate = GetTemplate("Index.html");
+
+        var template = Handlebars.Compile(indexTemplate);
+
+        var result = template(context);
+        File.WriteAllText($"{baseDirectory}index.html", result);
     }
 
     private void GenerateStockPages(string baseDirectory, TraderSystemSimulation traderSystemSimulation,
@@ -125,11 +144,11 @@ public class HtmlGenerator
 
             playerHoldingScatter.LegendText = player.CompanyName + " - Holdings";
             playerPlotHoldingScatter.LegendText = "Holdings";
-         
+
             playerPlot.Axes.DateTimeTicksBottom();
             playerPlot.SavePng($"{baseDirectory}{gameDate:dd-MM-yyyy-HH-mm}\\{player.CompanyName}.png", 1920,
                 1080);
-            
+
             string html = GenerateHtmlForPlayer(player, baseDirectory, traderSystemSimulation,
                 gameDate);
             File.WriteAllText($"{baseDirectory}{gameDate:dd-MM-yyyy-HH-mm}\\{player.CompanyName}.html", html);
@@ -180,6 +199,17 @@ public class HtmlGenerator
         var result = template(context);
         return result;
     }
+}
+
+internal class IndexGame
+{
+    public string GameHTML { get; set; }
+    public string Name { get; set; }
+}
+
+internal class IndexContext
+{
+    public IndexGame[] Games { get; set; }
 }
 
 internal class PlayerTemplateContext
