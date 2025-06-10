@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Handlebars.Net" Version="2.1.6" />
+      <PackageReference Include="ScottPlot" Version="5.0.55" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\Index.html" />
+      <EmbeddedResource Include="Templates\Index.html" />
+      <None Remove="Templates\GameResult.html" />
+      <EmbeddedResource Include="Templates\GameResult.html" />
+      <None Remove="Templates\StockTemplate.html" />
+      <EmbeddedResource Include="Templates\PlayerResult.html" />
+      <EmbeddedResource Include="Templates\StockTemplate.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NasdaqTraderSystem.Core\NasdaqTraderSystem.Core.csproj" />
+    </ItemGroup>
+
+</Project>

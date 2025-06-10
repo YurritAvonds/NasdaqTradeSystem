@@ -88,4 +88,13 @@ public class Holding : IHolding
 {
     public IStockListing Listing { get; set; }
     public int Amount { get; set; }
+
+    public IHolding Copy()
+    {
+        return new Holding()
+        {
+            Listing = Listing,
+            Amount = Amount
+        };
+    }
 }

@@ -4,6 +4,8 @@ namespace NasdaqTraderSystem.Core;
 
 public class TraderSystemSimulation
 {
+    public List<HistoricCompanyRecord> Records = new();
+    
     public List<ITraderBot> Players { get; set; } = new();
 
     public List<IStockListing> StockListings { get; set; } = new();
@@ -41,14 +43,14 @@ public class TraderSystemSimulation
         {
             return false;
         }
-
+     
         _systemContext.CurrentDate = _systemContext.CurrentDate.AddDays(1);
         while (_systemContext.CurrentDate.DayOfWeek == DayOfWeek.Saturday ||
                _systemContext.CurrentDate.DayOfWeek == DayOfWeek.Sunday || _systemContext.CurrentDate.IsFederalHoliday())
         {
             _systemContext.CurrentDate = _systemContext.CurrentDate.AddDays(1);
         }
-
+       
         foreach (var player in Players)
         {
             try
@@ -59,8 +61,24 @@ public class TraderSystemSimulation
             {
             }
         }
-
+        
+        SaveRecordForDate();
         return true;
+    }
+
+    private void SaveRecordForDate()
+    {
+        foreach (var player in Players)
+        {
+            Records.Add(new HistoricCompanyRecord()
+            {
+                Name= player.CompanyName,
+                OnDate = _systemContext.CurrentDate,
+                Holdings = Holdings[player].OfType<Holding>().Select(c=> c.Copy()).ToArray(),
+                Cash = BankAccounts[player],
+                Transactions= Trades[player].Where(b=> b.ExecutedOn == _systemContext.CurrentDate).ToArray()
+            });
+        }
     }
 
     public DateOnly GetCurrentDate()
@@ -117,7 +135,7 @@ public class TraderSystemSimulation
 
         holding.Amount += trade.Amount;
         BankAccounts[traderBot] -= (trade.Amount * trade.AtPrice);
-
+        Trades[traderBot].Add(trade);
         return false;
     }
 

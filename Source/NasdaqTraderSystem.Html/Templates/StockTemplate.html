@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{Listing.Name}}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<h1>{{Listing.Name}}</h1>
+<img src="{{Listing.Ticker}}.png">
+{{#TradesForPlayers}}
+<h1>{{CompanyName}}</h1>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ExecutedOn</th>
+        <th scope="col">Amount</th>
+        <th scope="col">AtPrice</th>
+        <th scope="col">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#Trades}}
+    <tr scope="row">
+        <td>{{ExecutedOn}}</td>
+        <td>{{Amount}}</td>
+        <td>{{AtPrice}}</td>
+        <td>{{Total}}</td>
+    </tr>
+    {{/Trades}}
+    </tbody>
+</table>
+
+{{/TradesForPlayers}}
+
+</body>
+</html>

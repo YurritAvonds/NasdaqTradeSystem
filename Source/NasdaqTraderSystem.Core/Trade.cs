@@ -8,4 +8,5 @@ public class Trade : ITrade
     public IStockListing Listing { get; set; }
     public int Amount { get; set; }
     public decimal AtPrice { get; set; }
+    public decimal Total => Amount * AtPrice;
 }

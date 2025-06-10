@@ -17,6 +17,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\NasdaqTraderSystem.Core\NasdaqTraderSystem.Core.csproj"/>
+        <ProjectReference Include="..\NasdaqTraderSystem.Html\NasdaqTraderSystem.Html.csproj" />
     </ItemGroup>
 
 </Project>

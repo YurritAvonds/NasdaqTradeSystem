@@ -13,12 +13,6 @@ public class ExampleTrader : ITraderBot
         var currentDate = systemContext.CurrentDate;
         var tradesLeft = systemContext.GetTradesLeftForToday(this);
 
-        systemContext.BuyStock(this, listings[0], 4);
-        systemContext.SellStock(this, listings[0], 1);
-
-        if (systemContext.CurrentDate == systemContext.EndDate)
-        {
-            systemContext.SellStock(this, listings[0], systemContext.GetHoldings(this, listings[0]).Amount);
-        }
+        systemContext.BuyStock(this, listings[0], 1);
     }
 }

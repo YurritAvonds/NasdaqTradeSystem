@@ -2,6 +2,9 @@
 
 using NasdaqTrader.Bot.Core;
 using NasdaqTraderSystem.Core;
+using NasdaqTraderSystem.Html;
+
+var html = new HtmlGenerator();
 
 var parameters = Environment.GetCommandLineArgs();
 
@@ -41,7 +44,7 @@ var stocksLoader = new StockLoader(dataFolder, amountOfStock);
 TraderSystemSimulation traderSystemSimulation = new TraderSystemSimulation(
     botTypes.Values.Select(b => (ITraderBot)Activator.CreateInstance(b)).ToList(),
     startingCash, new DateOnly(2021, 01, 01),
-    new DateOnly(2025, 01, 01), 5,
+    new DateOnly(2024, 12, 31), 5,
     stocksLoader);
 
 while (traderSystemSimulation.DoSimulationStep())
@@ -54,6 +57,10 @@ foreach (var player in traderSystemSimulation.Players)
     Console.WriteLine(
         $"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.GetContext()):0.00}");
 }
+
+html.GenerateFiles(AppContext.BaseDirectory + "Results\\", traderSystemSimulation);
+
+
 
 
 string GetParameter(string parameter, string question, string[] arguments)

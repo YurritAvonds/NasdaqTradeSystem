@@ -2,7 +2,7 @@
 
 internal static class DateExtension
 {
-      /// <summary>
+    /// <summary>
     /// Determines if this date is a federal holiday.
     /// </summary>
     /// <param name="date">This date</param>
@@ -16,6 +16,12 @@ internal static class DateExtension
         bool isFriday = dayName == DayOfWeek.Friday;
         bool isMonday = dayName == DayOfWeek.Monday;
         bool isWeekend = dayName == DayOfWeek.Saturday || dayName == DayOfWeek.Sunday;
+
+
+        //Junteeth
+        if (new DateOnly(date.Year, 6, 19) == date) return true;
+        //good friday
+        if (DateOnly.FromDateTime(EasterSunday(date.Year)).AddDays(-2) == date) return true;
 
         // New Years Day (Jan 1, or preceding Friday/following Monday if weekend)
         if ((date.Month == 12 && date.Day == 31 && isFriday) ||
@@ -56,5 +62,27 @@ internal static class DateExtension
             (date.Month == 12 && date.Day == 26 && isMonday)) return true;
 
         return false;
+    }
+
+    public static DateTime EasterSunday(int year)
+    {
+        int day = 0;
+        int month = 0;
+
+        int g = year % 19;
+        int c = year / 100;
+        int h = (c - (int)(c / 4) - (int)((8 * c + 13) / 25) + 19 * g + 15) % 30;
+        int i = h - (int)(h / 28) * (1 - (int)(h / 28) * (int)(29 / (h + 1)) * (int)((21 - g) / 11));
+
+        day = i - ((year + (int)(year / 4) + i + 2 - c + (int)(c / 4)) % 7) + 28;
+        month = 3;
+
+        if (day > 31)
+        {
+            month++;
+            day -= 31;
+        }
+
+        return new DateTime(year, month, day);
     }
 }
