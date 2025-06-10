@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
 using NasdaqTrader.Bot.Core;
 using NasdaqTraderSystem.Core;
 using NasdaqTraderSystem.Html;
@@ -23,6 +24,17 @@ amountOfStocksAsText = GetParameter("-n", $"Aantal aandelen op beurs (default 10
 if (!int.TryParse(amountOfStocksAsText, out amountOfStock))
 {
     amountOfStock = 100;
+}
+
+bool runSilent = args.Any(b => b.Equals("-s"));
+
+int timeLimit = 10000;
+string timeLimitAsText = "";
+timeLimitAsText = GetParameter("-t", $"Tijdlimiet voor totale run (default 10000)",
+    parameters);
+if (!int.TryParse(timeLimitAsText, out timeLimit))
+{
+    timeLimit = 10000;
 }
 
 int startingCash = 100000;
@@ -55,12 +67,11 @@ foreach (var player in traderSystemSimulation.Players)
         {
             while (await traderSystemSimulation.DoSimulationStep(player))
             {
-                
             }
         }));
 }
 
-await Task.Delay(5000);
+await Task.Delay(timeLimit);
 foreach (var player in traderSystemSimulation.Players)
 {
     if (playerTasks[player].IsCompleted == false)
@@ -68,6 +79,7 @@ foreach (var player in traderSystemSimulation.Players)
         traderSystemSimulation.DidNotFinished.Add(player);
     }
 }
+
 foreach (var player in traderSystemSimulation.Players)
 {
     playerTasks[player].Wait();
@@ -80,8 +92,19 @@ foreach (var player in traderSystemSimulation.Players)
         $"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.EndDate):0.00}");
 }
 
+Console.WriteLine("Generating html results");
 html.GenerateFiles(AppContext.BaseDirectory + "Results\\", traderSystemSimulation);
 
+
+if (!runSilent)
+{
+    var p = new Process();
+    p.StartInfo = new ProcessStartInfo(AppContext.BaseDirectory + "Results\\index.html")
+    {
+        UseShellExecute = true
+    };
+    p.Start();
+}
 
 string GetParameter(string parameter, string question, string[] arguments)
 {

@@ -9,6 +9,19 @@ namespace NasdaqTraderSystem.Html;
 
 public class HtmlGenerator
 {
+    private readonly HandlebarsTemplate<object,object> _stockTemplate;
+    private readonly HandlebarsTemplate<object, object> _playerTemplate;
+
+    public HtmlGenerator()
+    {
+        var indexTemplate = GetTemplate("StockTemplate.html");
+
+        _stockTemplate = Handlebars.Compile(indexTemplate);
+        
+        indexTemplate = GetTemplate("PlayerResult.html");
+        _playerTemplate = Handlebars.Compile(indexTemplate);
+    }
+    
     public string GetGameHtml(SimulationResults results)
     {
         var indexTemplate = GetTemplate("GameResult.html");
@@ -108,11 +121,8 @@ public class HtmlGenerator
                 Trades = b.Value.Where(c => c.Listing.Ticker == listing.Ticker).ToArray()
             }
         ).ToArray();
-        var indexTemplate = GetTemplate("StockTemplate.html");
-
-        var template = Handlebars.Compile(indexTemplate);
-
-        var result = template(context);
+     
+        var result = _stockTemplate(context);
         return result;
     }
 
@@ -192,11 +202,9 @@ public class HtmlGenerator
         PlayerTemplateContext context = new();
         context.CompanyName = player.CompanyName;
         context.TradesForPlayer = traderSystemSimulation.Trades[player].ToArray();
-        var indexTemplate = GetTemplate("PlayerResult.html");
 
-        var template = Handlebars.Compile(indexTemplate);
 
-        var result = template(context);
+        var result = _playerTemplate(context);
         return result;
     }
 }
