@@ -36,11 +36,11 @@ public class HtmlGenerator
         var gameDate = DateTime.Now;
 
         SimulationResults results = new SimulationResults();
-        results.StartDate = traderSystemSimulation.GetContext().StartDate;
-        results.EndDate = traderSystemSimulation.GetContext().EndDate;
+        results.StartDate = traderSystemSimulation.StartDate;
+        results.EndDate = traderSystemSimulation.EndDate;
         results.RunAt = gameDate.ToString("dd-MM-yyyy HH:mm");
         results.Listings = traderSystemSimulation.StockListings.ToArray();
-        results.Trades = traderSystemSimulation.Trades;
+        results.Trades = traderSystemSimulation.Trades.ToDictionary();
 
         GenerateStockPages(baseDirectory, traderSystemSimulation, gameDate, results);
         results.Companies = traderSystemSimulation.Players.Select(c =>

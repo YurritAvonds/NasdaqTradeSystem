@@ -47,20 +47,40 @@ TraderSystemSimulation traderSystemSimulation = new TraderSystemSimulation(
     new DateOnly(2024, 12, 31), 5,
     stocksLoader);
 
-while (traderSystemSimulation.DoSimulationStep())
+Dictionary<ITraderBot, Task> playerTasks = new();
+foreach (var player in traderSystemSimulation.Players)
 {
+    playerTasks.Add(player,
+        Task.Run(async () =>
+        {
+            while (await traderSystemSimulation.DoSimulationStep(player))
+            {
+                
+            }
+        }));
+}
+
+await Task.Delay(5000);
+foreach (var player in traderSystemSimulation.Players)
+{
+    if (playerTasks[player].IsCompleted == false)
+    {
+        traderSystemSimulation.DidNotFinished.Add(player);
+    }
+}
+foreach (var player in traderSystemSimulation.Players)
+{
+    playerTasks[player].Wait();
 }
 
 Console.WriteLine("Results:");
 foreach (var player in traderSystemSimulation.Players)
 {
     Console.WriteLine(
-        $"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.GetContext()):0.00}");
+        $"{player.CompanyName}    -   ${traderSystemSimulation.BankAccounts[player] + traderSystemSimulation.Holdings[player].GetCurrentValue(traderSystemSimulation.EndDate):0.00}");
 }
 
 html.GenerateFiles(AppContext.BaseDirectory + "Results\\", traderSystemSimulation);
-
-
 
 
 string GetParameter(string parameter, string question, string[] arguments)
