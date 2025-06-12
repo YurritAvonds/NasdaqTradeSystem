@@ -38,13 +38,13 @@ if (!int.TryParse(timeLimitAsText, out timeLimit))
     timeLimit = 10000;
 }
 
-int startingCash = 100000;
+int startingCash = 1000;
 string startingCashAsText = "";
-startingCashAsText = GetParameter("-s", $"Start bedrag(default 100.000)",
+startingCashAsText = GetParameter("-s", $"Start bedrag(default 1000)",
     parameters);
 if (!int.TryParse(startingCashAsText, out startingCash))
 {
-    startingCash = 100000;
+    startingCash = 1000;
 }
 
 BotLoader botLoader = new BotLoader();
