@@ -49,8 +49,8 @@ Elke nacht loopt het spel opnieuw, de resultaten komen op: [Resultaten pagina](h
 ## Lokaal runnen
 Voor het lokaal uitvoeren van je bot neem de volgende stappen:
 
-- Build je project en zorg dat de output komt in Build\Bots
-- Run via commandline of door dit in te stellen bij je run configuratie in visual studio Build\NasdaqTrader.CLI.exe
+- Build je project en zorg dat de output komt in (Build\Bots)[https://github.com/CSHDJO/NasdaqTradeSystem/tree/master/Build/Bots]
+- Run via commandline of door dit in te stellen bij je run configuratie in visual studio (Build\NasdaqTrader.CLI.exe)[https://github.com/CSHDJO/NasdaqTradeSystem/blob/master/Build/NasdaqTrader.CLI.exe]
 - Deze vraagt om instellingen voor het runnen, vul deze zoals je wilt of laat op default staan
 - Nu runt het spel aan het eind toont deze op je lokale pc de resultaten pagina
 
