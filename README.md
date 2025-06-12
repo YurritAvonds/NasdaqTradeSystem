@@ -39,7 +39,7 @@ Het spel loopt per speler individueel er kan dus niet naar elkaar worden gekeken
 ## Hoe doe ik mee?
 Maak een fork van dit project op github [How to fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) 
 
-Maak je bot door een kopie te pakken van de ExampleBot die staat in de Bots map. 
+Maak je bot door een kopie te pakken van de ExampleBot die staat in de [Bots map](https://github.com/CSHDJO/NasdaqTradeSystem/tree/master/Bots). 
 
 Als je voor de komende run je bot wil updaten, maak dan een pull request [How to create pull request from fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
 
