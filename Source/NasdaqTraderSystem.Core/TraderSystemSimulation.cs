@@ -125,6 +125,11 @@ public class TraderSystemSimulation
             Holdings[traderBot].Add(holding);
         }
 
+        if (holding.Amount + trade.Amount > 1000)
+        {
+            return false;
+        }
+        
         if (trade.Amount < 0
             && holding.Amount + trade.Amount < 0)
         {
