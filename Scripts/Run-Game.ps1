@@ -8,6 +8,12 @@ git fetch
 git pull
 Set-Location -Path $startPath
 
+Write-Host "Removing all files from Build/Bots folder"
+$botsBuildPath = Resolve-Path "$PSScriptRoot/../Build/Bots"
+if (Test-Path $botsBuildPath) {
+    Get-ChildItem -Path $botsBuildPath -Recurse -File | Remove-Item -Force
+}
+
 Write-Host "Restore and build the solution"
 #restore and build the solution
 dotnet restore $solutionPath
