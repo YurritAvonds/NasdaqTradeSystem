@@ -15,13 +15,13 @@ public interface ITraderSystemContext
 	int AmountOfTradesPerDay { get; }  
 	
 	decimal GetCurrentCash(ITraderBot traderBot);  
-    decimal GetPriceOnDay(IStockListing listing);  
-    ReadOnlyCollection<IStockListing> GetListings();  
-    int GetTradesLeftForToday(ITraderBot traderBot);  
-    bool BuyStock(ITraderBot traderBot,IStockListing listing, int amount);  
-    bool SellStock(ITraderBot traderBot, IStockListing listing, int amount);  
-    IHolding GetHolding(ITraderBot traderBot, IStockListing listing);  
-    IHolding[] GetHoldings(ITraderBot traderBot);  
+	decimal GetPriceOnDay(IStockListing listing);  
+	ReadOnlyCollection<IStockListing> GetListings();  
+	int GetTradesLeftForToday(ITraderBot traderBot);  
+	bool BuyStock(ITraderBot traderBot,IStockListing listing, int amount);  
+	bool SellStock(ITraderBot traderBot, IStockListing listing, int amount);  
+	IHolding GetHolding(ITraderBot traderBot, IStockListing listing);  
+	IHolding[] GetHoldings(ITraderBot traderBot);  
 }
 ```
 Hiermee heb je alle informatie en mogelijke acties om te kunnen winnen.
