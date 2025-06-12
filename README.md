@@ -1,8 +1,6 @@
 # Bij de zomercompetitie 2025 - NasdaqTrader
 Het doel van het spel is om zo rijk mogelijk te worden. Je gaat dit doen door automatisch te handelen op de beurs. 
 
-
-
 ## Hoe werkt het spel
 Je maakt een Trading bot, deze krijgt toegang tot de beurs. Maar er is iets bijzonders met deze beurs, alle koersen  ook die in de toekomst zijn al bekend. Er is dus een optimale koop/verkoopstrategie er komt geen geluk bij kijken. 
 Je trader bot heeft een enkele methode **DoTurn** binnen deze functie kan je de koersen opvragen en aandelen kopen of verkopen. Deze functie heeft een parameter **ITraderSystemContext**:
@@ -41,7 +39,8 @@ Maak een fork van dit project op github [How to fork](https://docs.github.com/en
 
 Maak je bot door een kopie te pakken van de ExampleBot die staat in de [Bots map](https://github.com/CSHDJO/NasdaqTradeSystem/tree/master/Bots). 
 
-Als je voor de komende run je bot wil updaten, maak dan een pull request [How to create pull request from fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
+Als je voor de komende run je bot wil updaten, maak dan een pull request [How to create pull request from fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) 
+Zorg ervoor dat je project wel build!
 
 Elke nacht loopt het spel opnieuw, de resultaten komen op: [Resultaten pagina](https://chipper-genie-b3874c.netlify.app/)
 
