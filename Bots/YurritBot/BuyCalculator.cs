@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace YurritBot;
 
-namespace YurritBot;
-
-public class BuyCalculator
+public class BuyCalculator(int maximumBuyAmountPerStock)
 {
-    private const int maximumBuyAmountPerStock = 1000;
+    public int MaximumBuyAmountPerStock { get; private set; } = maximumBuyAmountPerStock;
 
     public int CalculateMaximuumBuyAmount(decimal currentCash, decimal listingPrice)
     {

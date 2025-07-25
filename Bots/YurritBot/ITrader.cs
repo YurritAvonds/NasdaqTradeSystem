@@ -1,4 +1,5 @@
 ﻿using NasdaqTrader.Bot.Core;
+using YurritBot.Logging;
 
 namespace YurritBot
 {
@@ -6,9 +7,9 @@ namespace YurritBot
     {
         int IndexToday { get; }
         int IndexReferenceDay { get; }
-        Logger Logger { get; }
+        ILogger Logger { get; }
         ITraderBot TraderBot { get; }
-        ITraderSystemContext TraderSystemContext { get; }
+        ITraderSystemContext SystemContext { get; }
 
         void ExecuteStrategy();
     }

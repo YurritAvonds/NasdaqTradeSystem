@@ -1,4 +1,5 @@
 ﻿using NasdaqTrader.Bot.Core;
+using YurritBot.Logging;
 
 namespace YurritBot;
 
@@ -8,8 +9,8 @@ public class YurritBot : ITraderBot
 
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
-        var logger = new Logger();
-        logger.LogToFile($"{systemContext.CurrentDate}");
+        var logger = new NullLogger();
+        logger.Log($"{systemContext.CurrentDate}");
 
         int indexToday = DetermineTodayIndex(systemContext);
         int indexReferenceDay = indexToday + 5;
