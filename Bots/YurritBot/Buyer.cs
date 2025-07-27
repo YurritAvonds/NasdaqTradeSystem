@@ -11,38 +11,43 @@ class Buyer(ITraderBot traderBot, ITraderSystemContext systemContext, int indexT
     public int IndexReferenceDay { get; private set; } = indexReferenceDay;
     public ILogger Logger { get; private set; } = logger;
 
-    private const decimal cashlowerLimit = 50;
-    private const int maxBuyAmountPerStock = 25;
+    private const decimal cashlowerLimit = 100;
+    private const int maxBuyAmountPerStock = 1000;
 
     public void ExecuteStrategy()
     {
-        var listingsByExpectedIncrease = SystemContext.GetListings().OrderBy(listing
-            => (listing.PricePoints[IndexReferenceDay].Price - listing.PricePoints[IndexToday].Price) / listing.PricePoints[IndexToday].Price);
+        var currentCash = SystemContext.GetCurrentCash(TraderBot);
+        var listingsByExpectedIncrease = SystemContext.GetListings()
+            .Where(listing => listing.PricePoints[IndexToday].Price <= currentCash)
+            .OrderByDescending(listing => (listing.PricePoints[IndexReferenceDay].Price - listing.PricePoints[IndexToday].Price)
+                / listing.PricePoints[IndexToday].Price);
 
         var buyCalculator = new BuyCalculator(maxBuyAmountPerStock);
 
         foreach (var listing in listingsByExpectedIncrease)
         {
-            var currentCash = SystemContext.GetCurrentCash(TraderBot);
-            if (currentCash < cashlowerLimit
-                || SystemContext.GetTradesLeftForToday(TraderBot) <= 0)
+            currentCash = SystemContext.GetCurrentCash(TraderBot);
+            if (SystemContext.GetTradesLeftForToday(TraderBot) <= 0
+                || currentCash < cashlowerLimit)
             {
                 return;
             }
 
-            // TODO find more efficient way to spot this situation upfront
-            var pricePointToday = listing.PricePoints[IndexToday].Price;
-            if (currentCash < pricePointToday)
+            var maxBuyAmount = buyCalculator.CalculateMaximuumBuyAmount(currentCash, listing.PricePoints[IndexToday].Price);
+
+            if (maxBuyAmount < 1)
             {
                 continue;
             }
 
-            var maxBuyAmount = buyCalculator.CalculateMaximuumBuyAmount(currentCash, pricePointToday);
             var success = SystemContext.BuyStock(TraderBot, listing, maxBuyAmount);
-            if (!success)
-            {
-                Logger.Log($"Failed BUY - Current {currentCash} | Price {pricePointToday} | Amount {maxBuyAmount}");
-            }
+
+            Logger.LogTransaction(
+                category: success ? "" : "ERR",
+                ticker: listing.Ticker,
+                currentCash: SystemContext.GetCurrentCash(TraderBot),
+                pricePoint: listing.PricePoints[IndexToday].Price,
+                amount: maxBuyAmount);
         }
     }
 }

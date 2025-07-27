@@ -15,19 +15,29 @@ class Seller(ITraderBot traderBot, ITraderSystemContext systemContext, int index
 
     public void ExecuteStrategy()
     {
+        var holdings = SystemContext.GetHoldings(TraderBot);
+        if (holdings.Length == 0)
+        {
+            return;
+        }
+
         // TODO some are sold with losses because original price is not taken into account
-        var sellableHoldings = SystemContext.GetHoldings(TraderBot).Where(holding
-            => holding.Amount > 0
-                && ((holding.Listing.PricePoints[IndexReferenceDay].Price - holding.Listing.PricePoints[IndexToday].Price) < 0));
+        var sellableHoldings = holdings.Where(holding
+            => ((holding.Listing.PricePoints[IndexToday].Price - holding.Listing.PricePoints[IndexReferenceDay].Price) > 0)
+                && holding.Amount > 0);
+
+        Logger.Log($"SELLABLE {sellableHoldings.Count()}");
 
         foreach (var holding in sellableHoldings)
         {
             var success = SystemContext.SellStock(TraderBot, holding.Listing, holding.Amount);
 
-            if (!success)
-            {
-                Logger.Log($"Failed SELL - Current {holding.Listing.Name} | Price {holding.Listing.PricePoints[IndexToday].Price} | Amount {holding.Amount}");
-            }
+            Logger.LogTransaction(
+                category: success ? "" : "ERR",
+                ticker: holding.Listing.Ticker,
+                currentCash: SystemContext.GetCurrentCash(TraderBot),
+                pricePoint: holding.Listing.PricePoints[IndexToday].Price,
+                amount: holding.Amount);
         }
     }
 }
