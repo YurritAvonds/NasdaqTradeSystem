@@ -1,4 +1,5 @@
 ﻿using NasdaqTrader.Bot.Core;
+using System.Reflection;
 using YurritBot.Logging;
 
 namespace YurritBot;
@@ -19,8 +20,8 @@ class Buyer(ITraderBot traderBot, ITraderSystemContext systemContext, int indexT
         var currentCash = SystemContext.GetCurrentCash(TraderBot);
         var listingsByExpectedIncrease = SystemContext.GetListings()
             .Where(listing => listing.PricePoints[IndexToday].Price <= currentCash)
-            .OrderByDescending(listing => (listing.PricePoints[IndexReferenceDay].Price - listing.PricePoints[IndexToday].Price)
-                / listing.PricePoints[IndexToday].Price);
+            .Where(listing => listing.PricePoints[IndexReferenceDay].Price / listing.PricePoints[IndexToday].Price > 1)
+            .OrderByDescending(listing => (listing.PricePoints[IndexReferenceDay].Price / listing.PricePoints[IndexToday].Price));
 
         var buyCalculator = new BuyCalculator(maxBuyAmountPerStock);
 

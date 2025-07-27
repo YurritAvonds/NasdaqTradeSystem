@@ -21,14 +21,7 @@ class Seller(ITraderBot traderBot, ITraderSystemContext systemContext, int index
             return;
         }
 
-        // TODO some are sold with losses because original price is not taken into account
-        var sellableHoldings = holdings.Where(holding
-            => ((holding.Listing.PricePoints[IndexToday].Price - holding.Listing.PricePoints[IndexReferenceDay].Price) > 0)
-                && holding.Amount > 0);
-
-        Logger.Log($"SELLABLE {sellableHoldings.Count()}");
-
-        foreach (var holding in sellableHoldings)
+        foreach (var holding in holdings)
         {
             var success = SystemContext.SellStock(TraderBot, holding.Listing, holding.Amount);
 
