@@ -12,7 +12,7 @@ public class YurritBot : ITraderBot
 
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
-        var logger = new FileLogger();
+        var logger = new NullLogger();
 
         logger.Log($"");
         logger.Log($"{systemContext.CurrentDate}");
