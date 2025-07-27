@@ -23,6 +23,11 @@ class Seller(ITraderBot traderBot, ITraderSystemContext systemContext, int index
 
         foreach (var holding in holdings)
         {
+            if (holding.Amount == 0)
+            {
+                continue;
+            }
+
             var success = SystemContext.SellStock(TraderBot, holding.Listing, holding.Amount);
 
             Logger.LogTransaction(
