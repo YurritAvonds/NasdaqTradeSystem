@@ -9,7 +9,6 @@ public class YurritBot : ITraderBot
     public string CompanyName => "Stock Out Like a Sore Thumb";
     
     private const int timeScale = 1;
-    private const int indexOffset = 2; // GetPricePointOnDay starts on 3rd of the month only
 
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
@@ -19,7 +18,8 @@ public class YurritBot : ITraderBot
         logger.Log($"{systemContext.CurrentDate}");
         logger.Log($"=========");
 
-        int indexToday = DetermineTodayIndex(systemContext);
+        int indexToday = new DateCalculator()
+            .DetermineDateIndex(systemContext.CurrentDate, systemContext.GetListings().First().PricePoints);
 
         logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
 
@@ -46,10 +46,5 @@ public class YurritBot : ITraderBot
         logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
     }
 
-    private static int DetermineTodayIndex(ITraderSystemContext systemContext)
-    {
-        return (int)(systemContext.CurrentDate.ToDateTime(TimeOnly.MinValue)
-            - systemContext.StartDate.ToDateTime(TimeOnly.MinValue)).TotalDays
-            - indexOffset;
-    }
+    
 }
