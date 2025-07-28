@@ -9,41 +9,31 @@ public class YurritBot : ITraderBot
     public string CompanyName => "Stock Out Like a Sore Thumb";
     
     private const int timeScale = 1;
+    private const string logFileName = "yurritbot_errors.log";
 
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
-        var logger = new NullLogger();
+        var logger = new FileLogger(Path.Combine(AppContext.BaseDirectory, logFileName));
 
-        logger.Log($"");
-        logger.Log($"{systemContext.CurrentDate}");
-        logger.Log($"=========");
+        logger.LogHeader1($"{systemContext.CurrentDate}");
 
+        // SLOW
         int indexToday = new DateCalculator()
             .DetermineDateIndex(systemContext.CurrentDate, systemContext.GetListings().First().PricePoints);
 
-        logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
+        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
 
-        logger.Log($"SELL");
-        logger.Log($"----");
-        var timerSell = new Stopwatch();
-        timerSell.Start();
-        new Seller(this, systemContext, indexToday, indexToday - timeScale, logger)
-            .ExecuteStrategy();
-        timerSell.Stop();
-        logger.Log($"- {timerSell.ElapsedMilliseconds}ms");
+        //logger.LogHeader2($"SELL");
 
-        logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
+        new Seller().ExecuteStrategy(this, systemContext, logger);
 
-        logger.Log($"BUY");
-        logger.Log($"---");
-        var timerBuy = new Stopwatch();
-        timerBuy.Start();
-        new Buyer(this, systemContext, indexToday, indexToday + timeScale, logger)
-            .ExecuteStrategy();
-        timerBuy.Stop();
-        logger.Log($"- {timerBuy.ElapsedMilliseconds}ms");
+        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
 
-        logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
+        //logger.LogHeader2($"BUY");
+
+        new Buyer().ExecuteStrategy(this, systemContext, indexToday, indexToday + timeScale, logger);
+
+        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
     }
 
     
