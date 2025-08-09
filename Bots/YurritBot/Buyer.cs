@@ -10,13 +10,15 @@ public class Buyer()
 
     public void ExecuteStrategy(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, int indexReferenceDay, ILogger logger)
     {
+        logger.LogHeader2($"BUY");
+
         var currentCash = systemContext.GetCurrentCash(traderBot);
         var listingsByExpectedIncrease = systemContext.GetListings()
             .Where(listing => listing.PricePoints[indexToday].Price <= currentCash)
             .Where(listing => listing.PricePoints[indexReferenceDay].Price / listing.PricePoints[indexToday].Price > 1)
             .OrderByDescending(listing => (listing.PricePoints[indexReferenceDay].Price / listing.PricePoints[indexToday].Price));
 
-        //var buyCalculator = new BuyCalculator(maximumBuyAmountPerStock);
+        var buyCalculator = new BuyCalculator(maximumBuyAmountPerStock);
 
         foreach (var listing in listingsByExpectedIncrease)
         {
@@ -27,7 +29,7 @@ public class Buyer()
                 return;
             }
 
-            var maxBuyAmount = CalculateMaximuumBuyAmount(currentCash, listing.PricePoints[indexToday].Price);
+            var maxBuyAmount = buyCalculator.CalculateMaximuumBuyAmount(currentCash, listing.PricePoints[indexToday].Price);
 
             if (maxBuyAmount < 1)
             {
@@ -36,18 +38,14 @@ public class Buyer()
 
             var success = systemContext.BuyStock(traderBot, listing, maxBuyAmount);
 
-            //Logger.LogTransaction(
-            //    category: success ? "" : "ERR",
-            //    ticker: listing.Ticker,
-            //    currentCash: SystemContext.GetCurrentCash(TraderBot),
-            //    pricePoint: listing.PricePoints[IndexToday].Price,
-            //    amount: maxBuyAmount);
+            logger.LogTransaction(
+                category: success ? "" : "ERR",
+                ticker: listing.Ticker,
+                currentCash: systemContext.GetCurrentCash(traderBot),
+                pricePoint: listing.PricePoints[indexToday].Price,
+                amount: maxBuyAmount);
         }
-    }
 
-    public int CalculateMaximuumBuyAmount(decimal currentCash, decimal listingPrice)
-    {
-        decimal maximumBuyAmountWithCurrentCash = currentCash / listingPrice;
-        return (int)Math.Floor(Math.Min(maximumBuyAmountPerStock, maximumBuyAmountWithCurrentCash));
+        logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
     }
 }

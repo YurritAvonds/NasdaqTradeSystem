@@ -14,27 +14,16 @@ public class YurritBot : ITraderBot
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
         var logger = new FileLogger(Path.Combine(AppContext.BaseDirectory, logFileName));
-
         logger.LogHeader1($"{systemContext.CurrentDate}");
 
         // SLOW
         int indexToday = new DateCalculator()
             .DetermineDateIndex(systemContext.CurrentDate, systemContext.GetListings().First().PricePoints);
 
-        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
-
-        //logger.LogHeader2($"SELL");
-
-        new Seller().ExecuteStrategy(this, systemContext, logger);
-
-        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
-
-        //logger.LogHeader2($"BUY");
-
+        new Seller().ExecuteStrategy(this, systemContext, indexToday, logger);
         new Buyer().ExecuteStrategy(this, systemContext, indexToday, indexToday + timeScale, logger);
-
-        //logger.Log($"- €{systemContext.GetCurrentCash(this):F2}");
+        
     }
 
-    
+
 }

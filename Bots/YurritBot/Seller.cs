@@ -5,10 +5,10 @@ namespace YurritBot;
 
 class Seller()
 {
-    private const int cashLowerLimit = 10;
-
-    public void ExecuteStrategy(ITraderBot traderBot, ITraderSystemContext systemContext, ILogger logger)
+    public void ExecuteStrategy(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, ILogger logger)
     {
+        logger.LogHeader2($"SELL");
+
         var holdings = systemContext.GetHoldings(traderBot);
         if (holdings.Length == 0)
         {
@@ -24,12 +24,14 @@ class Seller()
 
             var success = systemContext.SellStock(traderBot, holding.Listing, holding.Amount);
 
-            //Logger.LogTransaction(
-            //    category: success ? "" : "ERR",
-            //    ticker: holding.Listing.Ticker,
-            //    currentCash: SystemContext.GetCurrentCash(TraderBot),
-            //    pricePoint: holding.Listing.PricePoints[IndexToday].Price,
-            //    amount: holding.Amount);
+            logger.LogTransaction(
+                category: success ? "" : "ERR",
+                ticker: holding.Listing.Ticker,
+                currentCash: systemContext.GetCurrentCash(traderBot),
+                pricePoint: holding.Listing.PricePoints[indexToday].Price,
+                amount: holding.Amount);
         }
+
+        logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
     }
 }
