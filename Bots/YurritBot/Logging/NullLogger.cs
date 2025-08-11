@@ -2,6 +2,11 @@
 
 public class NullLogger : ILogger
 {
+    public void Erase()
+    {
+        
+    }
+
     public void Log(string text)
     {
         

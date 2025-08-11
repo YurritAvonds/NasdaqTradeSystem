@@ -2,7 +2,7 @@
 
 public class FileLogger(string logFilePath) : ILogger
 {
-    private string logFilePath = logFilePath;
+    private readonly string logFilePath = logFilePath;
 
     public void Log(string text)
     {
@@ -26,5 +26,10 @@ public class FileLogger(string logFilePath) : ILogger
         File.AppendAllLines(
             logFilePath,
             [text, new string('-', text.Length)]);
+    }
+
+    public void Erase()
+    {
+        File.Delete(logFilePath);
     }
 }
