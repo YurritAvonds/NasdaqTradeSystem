@@ -11,7 +11,7 @@ public class HtmlLogger(string logFilePath) : ILogger
 
     public void LogTransaction(string category, string ticker, decimal currentCash, decimal pricePoint, int amount)
     {
-        Log($"<p>- {category} {currentCash:F2} | {ticker} {amount} @ {pricePoint:F2}</p>");
+        Log($"<p>{category} | €{currentCash:F2} | {ticker} {amount} @ {pricePoint:F2}</p>");
     }
 
     public void LogHeader1(string text)

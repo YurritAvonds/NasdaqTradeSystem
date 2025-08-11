@@ -14,7 +14,6 @@ public class YurritBot : ITraderBot
     public async Task DoTurn(ITraderSystemContext systemContext)
     {
         var logger = new HtmlLogger(Path.Combine(AppContext.BaseDirectory, logFileName));
-        logger.LogHeader1($"{systemContext.CurrentDate}");
 
         // SLOW
         int indexToday = new DateCalculator()
@@ -23,8 +22,9 @@ public class YurritBot : ITraderBot
         if (indexToday == 0)
         {
             logger.Erase();
-            logger.Log($"{DateTime.Now}");
         }
+        logger.LogHeader1($"{systemContext.CurrentDate}");
+        logger.Log($"{DateTime.Now:dd-MMM-yyyy,hh:mm::ss.fff}");
 
         new Seller().ExecuteStrategy(this, systemContext, indexToday, logger);
         new Buyer().ExecuteStrategy(this, systemContext, indexToday, indexToday + timeScale, logger);

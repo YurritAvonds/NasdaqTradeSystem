@@ -7,11 +7,13 @@ class Seller()
 {
     public void ExecuteStrategy(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, ILogger logger)
     {
-        logger.LogHeader2($"SELL");
-        logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
+        logger.LogHeader2($"Sell");
 
-        var holdings = systemContext.GetHoldings(traderBot);
-        if (holdings.Length == 0)
+        logger.Log($"€{systemContext.GetCurrentCash(traderBot):F2}");
+
+        var holdings = systemContext.GetHoldings(traderBot)
+            .Where(holding => holding.Amount > 0);
+        if (!holdings.Any())
         {
             logger.Log($"no holdings");
             return;
@@ -21,8 +23,6 @@ class Seller()
         {
             TrySellHolding(traderBot, systemContext, indexToday, logger, holding);
         }
-
-        logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
     }
 
     private static void TrySellHolding(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, ILogger logger, IHolding holding)

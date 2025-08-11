@@ -11,12 +11,11 @@ public class Buyer()
 
     public void ExecuteStrategy(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, int indexReferenceDay, ILogger logger)
     {
-        logger.LogHeader2($"BUY");
-        logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
+        logger.LogHeader2($"Buy");
 
-        logger.Log($"listings: {systemContext.GetListings().Count()}");
+        logger.Log($"€{systemContext.GetCurrentCash(traderBot):F2}");
 
-        var listingsByExpectedIncrease = RankListings(traderBot, systemContext, indexToday, indexReferenceDay);
+        var listingsByExpectedIncrease = RankListings(traderBot, systemContext, indexToday, indexReferenceDay, logger);
         logger.Log($"ranked listings: {listingsByExpectedIncrease.Count()}");
 
         var buyCalculator = new BuyCalculator(maximumBuyAmountPerStock);
@@ -48,7 +47,7 @@ public class Buyer()
         logger.Log($"- €{systemContext.GetCurrentCash(traderBot):F2}");
     }
 
-    private static List<IStockListing> RankListings(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, int indexReferenceDay)
+    private static List<IStockListing> RankListings(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, int indexReferenceDay, ILogger logger)
     {
         var currentCash = systemContext.GetCurrentCash(traderBot);
         //return systemContext.GetListings()
@@ -56,7 +55,8 @@ public class Buyer()
         //    .Where(listing => listing.PricePoints[indexReferenceDay].Price / listing.PricePoints[indexToday].Price > 1)
         //    .OrderByDescending(listing => (listing.PricePoints[indexReferenceDay].Price / listing.PricePoints[indexToday].Price));
 
-        return systemContext.GetListings()
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        var rankedListings = systemContext.GetListings()
             .Select(l => new
             {
                 Listing = l,
@@ -68,12 +68,14 @@ public class Buyer()
             .OrderByDescending(x => x.PriceRatio)
             .Select(x => x.Listing)
             .ToList();
+        stopwatch.Stop();
+        logger.Log($"Ranking took {stopwatch.ElapsedTicks} ticks");
+
+        return rankedListings;
     }
 
     private static void TryBuyListing(ITraderBot traderBot, ITraderSystemContext systemContext, int indexToday, ILogger logger, decimal currentCash, BuyCalculator buyCalculator, IStockListing listing)
     {
-        logger.Log($"try buy {listing.Ticker}");
-
         if (currentCash < listing.PricePoints[indexToday].Price)
         {
             logger.Log($"too expensive");
