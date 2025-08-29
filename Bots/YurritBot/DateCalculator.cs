@@ -30,8 +30,20 @@ namespace YurritBot
         }
 
         public int DetermineDateIndex(DateOnly date, IEnumerable<IPricePoint> pricePoints)
-            => pricePoints.Select((pricePoint, index) => (pricePoint, index))
-                .First(pointIndexPair => pointIndexPair.pricePoint.Date.Equals(date))
-                .index;
+        {
+            var currentPricePoint = pricePoints.Select((pricePoint, index)
+                => (pricePoint, index))
+                    .FirstOrDefault(pointIndexPair => pointIndexPair.pricePoint.Date.Equals(date));
+
+            if (currentPricePoint.pricePoint != null)
+            {
+                return currentPricePoint.index;
+            }
+            else
+            {
+                // Date not found in price points
+                throw new ArgumentException($"Date {date} not found in price points.");
+            }
+        }
     }
 }

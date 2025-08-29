@@ -1,5 +1,4 @@
 ﻿using NasdaqTrader.Bot.Core;
-using System.Diagnostics;
 using YurritBot.Logging;
 
 namespace YurritBot;
@@ -7,7 +6,7 @@ namespace YurritBot;
 public class YurritBot : ITraderBot
 {
     public string CompanyName => "Stock Out Like a Sore Thumb";
-    
+
     private const int timeScale = 1;
     private const string logFileName = "yurritbot_log.html";
 
@@ -15,9 +14,18 @@ public class YurritBot : ITraderBot
     {
         var logger = new HtmlLogger(Path.Combine(AppContext.BaseDirectory, logFileName));
 
-        // SLOW
-        int indexToday = new DateCalculator()
-            .DetermineDateIndex(systemContext.CurrentDate, systemContext.GetListings().First().PricePoints);
+        int indexToday = -1;
+        try
+        {
+            // SLOW
+            indexToday = new DateCalculator()
+                .DetermineDateIndex(systemContext.CurrentDate, systemContext.GetListings().First().PricePoints);
+        }
+        catch (ArgumentException ex)
+        {
+            logger.Log($"Error determining date index: {ex.Message}");
+            return;
+        }
 
         if (indexToday == 0)
         {
@@ -28,7 +36,7 @@ public class YurritBot : ITraderBot
 
         new Seller().ExecuteStrategy(this, systemContext, indexToday, logger);
         new Buyer().ExecuteStrategy(this, systemContext, indexToday, indexToday + timeScale, logger);
-        
+
     }
 
 

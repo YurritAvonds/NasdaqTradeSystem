@@ -13,7 +13,7 @@ public class BuyerTests
     public void CalculateMaximuumBuyAmountTest(decimal currentCash, decimal listingPrice, int expectedAmount)
     {
         // Arrange
-        var buyer = new Buyer();
+        var buyer = new BuyCalculator(1000);
 
         // Act
         var maxAmount = buyer.CalculateMaximuumBuyAmount(currentCash, listingPrice);

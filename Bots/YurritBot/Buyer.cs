@@ -63,7 +63,7 @@ public class Buyer()
                 PriceToday = l.PricePoints[indexToday].Price,
                 PriceRatio = l.PricePoints[indexReferenceDay].Price / l.PricePoints[indexToday].Price
             })
-            .Where(x => x.PriceToday <= currentCash 
+            .Where(x => x.PriceToday <= currentCash
                      && x.PriceRatio > 1)
             .OrderByDescending(x => x.PriceRatio)
             .Select(x => x.Listing)
@@ -82,7 +82,16 @@ public class Buyer()
             return;
         }
 
+        var price = systemContext.GetPriceOnDay(listing);
+
+        if (price < 0.0001m)
+        {
+            logger.Log($"Failed to get price");
+            return;
+        }
+
         var maxBuyAmount = buyCalculator.CalculateMaximuumBuyAmount(currentCash, listing.PricePoints[indexToday].Price);
+
         var success = systemContext.BuyStock(traderBot, listing, maxBuyAmount);
 
         logger.LogTransaction(
